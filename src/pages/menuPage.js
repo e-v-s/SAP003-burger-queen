@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useRef} from 'react'
 import { db } from '../services/Firebase.js'
 import { StyleSheet, css } from 'aphrodite'
 
@@ -12,7 +12,7 @@ export default function MenuPage(props) {
 
 	const [menu, setMenu] = useState([])
 	const [tipoDeMenu, setTipoDeMenu] = useState('cafe')
-	const [order, setOrder] = useState('')
+	const [order, setOrder] = useState([])
 
 	useEffect(() => {
 		db.collection('menu').get().then(snap => {
@@ -25,26 +25,30 @@ export default function MenuPage(props) {
 		setTipoDeMenu(e.target.id)
 	}
 
-	let listOfItemsOrdered = []
-	const addToList = (id) => {
-		console.log(id)	
+	const addToList = (id) => {		
+		setOrder(order.concat(<li>{id}</li>))
 	}
 
 	return (
 		<div>
+		<section className={css(style.exemplo)}>
 			<form className={css(style.inputSection)}>		
 				<Input type='text' id='costumer-name' placeholder='Nome do Cliente' required/>
 				<Input type='number' id='costumer-number' placeholder='Número da mesa' required />
-			</form>
+				<ul id='order-list'>
+					{order}
+				</ul>
+			</form>			
 			<section className={css(style.buttonMenu)}>
 				<Button children='Café da Manhã' id='cafe' onClick={showMenu} />
 				<Button children='Lanches' id='lanche' onClick={showMenu} />
 			</section>
-			{['cafe', 'lanche'].filter(m => m === tipoDeMenu).map(categoria => 
-					<Menu children={
+		</section>
+				{['cafe', 'lanche'].filter(m => m === tipoDeMenu).map(categoria => 
+					<Menu key={Math.random()} children={
 						menu.filter(i => i.categoria === categoria).map(i => 
-							<MenuItem key={'dsadsadas'} onClick={() => addToList(i)}
-							title={i.nome} value={i.valor} />
+							<MenuItem onClick={() => addToList(i.nome)}
+							title={i.nome} key={i.nome} value={i.valor} />
 							)
 					}/>
 				)
@@ -54,27 +58,27 @@ export default function MenuPage(props) {
 }
 
 const style = StyleSheet.create({
+	divPage: {
+	},
 	inputSection: {
 		display: 'flex',
-		marginTop: '60px',
+		marginTop: '30px',
 		flexDirection: 'column',
-		width: '350px',
-		margin: '0 auto',
-		paddingTop: '50px'
+		width: '300px',
+		paddingTop: '50px',
+		justifyContent: 'flex-end',
+		order: '2'
 	},
 	buttonMenu: {
 		display:  'flex',
-		justifyContent:  'center',
 		marginTop: '30px',
+		flexDirection: 'column',
+		marginLeft:'60px',
+		order: '1'
 	},
-	menuBurgersAndType: {
+	exemplo: {
+		width: '900px',
 		display: 'flex',
-		justifyContent: 'space-around'
-	},
-	menuBurgersOnly:{
-		display: 'flex',
-		flexDirection: 'column'
-	},
-	menuBurgerTypeOnly: {
+		justifyContent: 'space-between',
 	}
 })

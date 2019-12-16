@@ -3,7 +3,7 @@ import { StyleSheet, css } from 'aphrodite'
 
 export default function	Button({...props}) {
 	return (
-		<button {...props}  className={css(style.button)}></button>
+		<button {...props} className={css(style.button)}></button>
 	)
 }
 
@@ -12,11 +12,10 @@ const style = StyleSheet.create({
 		color: '#000',
 		textTransform: 'uppercase',
 		textAlign: 'center',
-		padding: '10px',
+		padding: '30px',
 		backgroundColor: '#FEBB3E',
 		borderRadius: '4px',
-		margin: '0 40px',
-		width: '200px',
+		width: '300px',
 		fontWeight: 'bold'
 	}
 })

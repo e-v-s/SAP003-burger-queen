@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
-export default function ItemAdded({...props}) {
+
+export default function ItemAdded({children, ...props}) {
+
 	return (
-			<a {...props}></a>
+			<li {...props}>{children}</li>
 	)
 }

@@ -14,6 +14,7 @@ const style = StyleSheet.create({
 		margin: '20px',
 		fontSize: '22px;',
 		outline: 'none',
+		width: '300px',
 	}
 })
 
