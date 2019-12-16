@@ -13,6 +13,7 @@ const style = StyleSheet.create({
 		borderBottom: '1px solid #ed3936',
 		margin: '20px',
 		fontSize: '22px;',
+		outline: 'none',
 	}
 })
 

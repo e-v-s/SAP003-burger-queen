@@ -1,9 +1,8 @@
-import React, {useEffect, useState} from 'react'
-import { db } from '../services/Firebase.js'
-import { Link, useHistory } from 'react-router-dom'
+import React from 'react'
+import { Link } from 'react-router-dom'
 import { StyleSheet, css } from 'aphrodite'
 
-export default function MainPage(props) {
+export default function MainPage() {
 	return (
 		<div className={css(styles.flex)}>
 			<Link to={'/menu'} className={css(styles.link)}>Salão</Link>

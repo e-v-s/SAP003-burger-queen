@@ -16,6 +16,7 @@ const style = StyleSheet.create({
 		backgroundColor: '#FEBB3E',
 		borderRadius: '4px',
 		margin: '0 40px',
-		width: '200px'
+		width: '200px',
+		fontWeight: 'bold'
 	}
 })

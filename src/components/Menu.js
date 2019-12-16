@@ -1,5 +1,4 @@
 import React from 'react'
-import Button from './Button.js'
 import { StyleSheet, css } from 'aphrodite'
 
 export default function Menu({children, ...props}) {
@@ -12,6 +11,10 @@ export default function Menu({children, ...props}) {
 
 const style = StyleSheet.create({
 	menu: {
-		marginTop: '20px'
+		marginTop: '20px',
+		display: 'flex',
+		flexDirection: 'column',
+		width: '300px',
+		marginLeft: '60px',
 	}
 })
