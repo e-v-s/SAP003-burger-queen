@@ -25,9 +25,15 @@ export default function MenuPage(props) {
 		setTipoDeMenu(e.target.id)
 	}
 
-	const addToList = (id) => {		
-		setOrder(order.concat(<li>{id}</li>))
+	const addToList = (id) => {	
+		setOrder([...order, id])
 	}
+
+	const trash = (e) => {
+		setOrder(order.filter(i => i !== e.target.id))		
+	}
+
+
 
 	return (
 		<div>
@@ -36,7 +42,9 @@ export default function MenuPage(props) {
 				<Input type='text' id='costumer-name' placeholder='Nome do Cliente' required/>
 				<Input type='number' id='costumer-number' placeholder='Número da mesa' required />
 				<ul id='order-list'>
-					{order}
+					{
+						order.map(i => <ItemAdded key={Math.random()} id={i} children={i} onClick={trash} />)
+					}
 				</ul>
 			</form>			
 			<section className={css(style.buttonMenu)}>
