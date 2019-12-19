@@ -27,15 +27,28 @@ export default function MenuPage(props) {
 	}
 
 	const addToList = (item) => {	
-		setOrder([...order, `${item.target.title} R$ ${item.target.id},00`])
-		setPrice(Number(price) + Number(item.target.id))
+		const itemIndex = order.findIndex(orderItem => orderItem.nome === item.nome);
+		if (itemIndex === -1) {
+		setOrder([...order, {...item, quantidade: 1}])
+		} else{
+			order[itemIndex].quantidade++
+			setOrder(order);
+		}
+		//setOrder([`${item.target.title} R$ ${item.target.id},00`])
+ 	}
+
+	const trash = (item) => {
+		const itemIndex = order.findIndex(orderItem => orderItem.nome === item.nome);
+		order.splice(itemIndex, 1);
+		setOrder(order)
 	}
 
-	const trash = (e) => {
-		setOrder(order.filter(i => i !== e.target.id))	
-		setPrice(Number(price) - parseInt((e.target.id).slice(-5)))
+	const adiciona=(item) => {
+
+		console.log(item)
 	}
 
+	const totalValue = order.reduce((acc, cur) => acc + (cur.valor * cur.quantidade), 0);
 	return (
 		<div>
 		<section className={css(style.exemplo)}>
@@ -44,24 +57,23 @@ export default function MenuPage(props) {
 				<Input type='number' id='costumer-number' placeholder='Número da mesa' required />
 				<ul id='order-list'>
 					{
-						order.map(i => <ItemAdded key={Math.random()} id={i} children={i} onClick={(e) => trash(e)} />)
+						order.map((item, index) => <ItemAdded key={index} item={item} remove={()=> {}}onClick={() => trash(item)} add={()=> adiciona(item)}/>)
 					}
 				</ul>
-				<p>Total: {price}</p>
+				<p>Total: {totalValue}</p>
 			</form>			
 			<section className={css(style.buttonMenu)}>
 				<Button children='Café da Manhã' id='cafe' onClick={showMenu} />
 				<Button children='Lanches' id='lanche' onClick={showMenu} />
 			</section>
 		</section>
-				{['cafe', 'lanche'].filter(m => m === tipoDeMenu).map(categoria => 
+			{
+				['cafe', 'lanche'].filter(m => m === tipoDeMenu).map(categoria => 
 					<Menu key={Math.random()} children={
 						menu.filter(i => i.categoria === categoria).map(i => 
-							<MenuItem onClick={(e) => addToList(e)} id={i.valor}
-							title={i.nome} key={i.nome} value={i.valor} />
+							<MenuItem onClick={() => addToList(i)} item={i} key={i.nome} />
 							)
-					}/>
-				)
+				}/>)
 			}
 		</div>
 	)
