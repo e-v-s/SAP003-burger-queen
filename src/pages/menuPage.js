@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef} from 'react'
+import React, { useEffect, useState } from 'react'
 import { db } from '../services/Firebase.js'
 import { StyleSheet, css } from 'aphrodite'
 
@@ -13,7 +13,6 @@ export default function MenuPage(props) {
 	const [menu, setMenu] = useState([])
 	const [tipoDeMenu, setTipoDeMenu] = useState('cafe')
 	const [order, setOrder] = useState([])
-	const [price, setPrice] = useState(0)
 
 	useEffect(() => {
 		db.collection('menu').get().then(snap => {
@@ -29,38 +28,59 @@ export default function MenuPage(props) {
 	const addToList = (item) => {	
 		const itemIndex = order.findIndex(orderItem => orderItem.nome === item.nome);
 		if (itemIndex === -1) {
-		setOrder([...order, {...item, quantidade: 1}])
-		} else{
+			setOrder([...order, {...item, quantidade: 1}])
+		} else {
 			order[itemIndex].quantidade++
-			setOrder(order);
+			setOrder([...order])
 		}
-		//setOrder([`${item.target.title} R$ ${item.target.id},00`])
  	}
 
 	const trash = (item) => {
 		const itemIndex = order.findIndex(orderItem => orderItem.nome === item.nome);
-		order.splice(itemIndex, 1);
-		setOrder(order)
+		order.splice(itemIndex, 1)
+		setOrder([...order])
 	}
 
 	const adiciona=(item) => {
-
-		console.log(item)
+		const itemIndex = order.findIndex(orderItem => orderItem.nome === item.nome)
+		order[itemIndex].quantidade++
+		setOrder([...order])
 	}
 
-	const totalValue = order.reduce((acc, cur) => acc + (cur.valor * cur.quantidade), 0);
+	const remove = (item) => {
+		const itemIndex = order.findIndex(orderItem => orderItem.nome === item.nome)
+		order[itemIndex].quantidade--
+		setOrder([...order])
+	}
+
+	const totalValue = order.reduce((acc, cur) => acc + (cur.valor * cur.quantidade), 0)
+
+	//ESTOU AQUI
+	const [name, setName] = useState('')
+	const [table, setTable] = useState(0)
+	const [msg, setMsg] = useState('')
+	
+	const sendToFirebase = (e) => {
+		db.collection('pedidos').add({
+			nomeDoCliente: name,
+			numeroDaMesa: table,
+			pedido: order.map(i => `${i.nome}, ${i.quantidade}`)
+		}).then(() => setMsg(<p>Pedido enviado para cozinha</p>))
+	}
+
 	return (
 		<div>
 		<section className={css(style.exemplo)}>
-			<form className={css(style.inputSection)}>		
-				<Input type='text' id='costumer-name' placeholder='Nome do Cliente' required/>
-				<Input type='number' id='costumer-number' placeholder='Número da mesa' required />
+			<form className={css(style.inputSection)} onSubmit={sendToFirebase}>		
+				<Input type='text' id='costumer-name' placeholder='Nome do Cliente' name='client' onChange={(e) => setName(e.target.value)} />
+				<Input type='number' id='costumer-number' placeholder='Número da mesa' name='table' onChange={(e) => setTable(e.target.value)} />
 				<ul id='order-list'>
 					{
-						order.map((item, index) => <ItemAdded key={index} item={item} remove={()=> {}}onClick={() => trash(item)} add={()=> adiciona(item)}/>)
+						order.map((item, index) => <ItemAdded key={index} item={item} remove={()=> remove(item)} onClick={() => trash(item)} add={()=> adiciona(item)} name='order' />)
 					}
 				</ul>
 				<p>Total: {totalValue}</p>
+				<Button children='Enviar pedido' id='enviar-pedido' value='Submit' type='submit' />
 			</form>			
 			<section className={css(style.buttonMenu)}>
 				<Button children='Café da Manhã' id='cafe' onClick={showMenu} />
