@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { db } from '../services/Firebase.js'
 import { StyleSheet, css } from 'aphrodite'
+import firebase from 'firebase'
 
 import Button from '../components/Button.js'
 import Input from '../components/Input.js'
@@ -58,14 +59,22 @@ export default function MenuPage(props) {
 	//ESTOU AQUI
 	const [name, setName] = useState('')
 	const [table, setTable] = useState(0)
-	const [msg, setMsg] = useState('')
 	
 	const sendToFirebase = (e) => {
-		db.collection('pedidos').add({
+		e.preventDefault()		
+		const pedido = {
 			nomeDoCliente: name,
 			numeroDaMesa: table,
-			pedido: order.map(i => `${i.nome}, ${i.quantidade}`)
-		}).then(() => setMsg(<p>Pedido enviado para cozinha</p>))
+			pedido: order.map(i => `${i.nome}, quantidade: ${i.quantidade}`)
+		}
+		if (window.confirm(`Enviar pedido \nCliente ${pedido.nomeDoCliente} \nMesa ${pedido.numeroDaMesa} \nResumo \n${pedido.pedido}?`)) {
+			db.collection('pedidos').add({
+				nomeDoCliente: name,
+				numeroDaMesa: table,
+				pedido: order.map(i => `${i.nome}, ${i.quantidade}`),
+				hora: firebase.firestore.FieldValue.serverTimestamp()
+			}).then(() => window.location.reload())			
+		}
 	}
 
 	return (
@@ -79,48 +88,52 @@ export default function MenuPage(props) {
 						order.map((item, index) => <ItemAdded key={index} item={item} remove={()=> remove(item)} onClick={() => trash(item)} add={()=> adiciona(item)} name='order' />)
 					}
 				</ul>
-				<p>Total: {totalValue}</p>
+				<p className={css(style.total)}>Total: {totalValue}</p>
 				<Button children='Enviar pedido' id='enviar-pedido' value='Submit' type='submit' />
 			</form>			
 			<section className={css(style.buttonMenu)}>
 				<Button children='Café da Manhã' id='cafe' onClick={showMenu} />
 				<Button children='Lanches' id='lanche' onClick={showMenu} />
+				{
+					['cafe', 'lanche'].filter(m => m === tipoDeMenu).map(categoria => 
+						<Menu key={Math.random()} children={
+							menu.filter(i => i.categoria === categoria).map(i => 
+								<MenuItem onClick={() => addToList(i)} item={i} key={i.nome} />
+								)
+					}/>)
+				}
 			</section>
 		</section>
-			{
-				['cafe', 'lanche'].filter(m => m === tipoDeMenu).map(categoria => 
-					<Menu key={Math.random()} children={
-						menu.filter(i => i.categoria === categoria).map(i => 
-							<MenuItem onClick={() => addToList(i)} item={i} key={i.nome} />
-							)
-				}/>)
-			}
 		</div>
 	)
 }
 
 const style = StyleSheet.create({
-	divPage: {
-	},
 	inputSection: {
 		display: 'flex',
 		marginTop: '30px',
 		flexDirection: 'column',
-		width: '300px',
+		width: '400px',
 		paddingTop: '50px',
-		justifyContent: 'flex-end',
-		order: '2'
+		order: '2',
+		marginRight: '60px',
+		alignContent: 'flex-start'
 	},
 	buttonMenu: {
 		display:  'flex',
-		marginTop: '30px',
+		marginTop: '90px',
 		flexDirection: 'column',
 		marginLeft:'60px',
-		order: '1'
+		order: '1',
 	},
 	exemplo: {
-		width: '900px',
 		display: 'flex',
-		justifyContent: 'space-between',
+		justifyContent: 'space-around',
+		'@media (max-width: 900px)': {
+			width: '900px',
+		}
+	},
+	total: {
+		fontSize: '20px'
 	}
 })

@@ -13,9 +13,12 @@ const style = StyleSheet.create({
 	headerImg: {
 		height: '200px',
 		marginTop: '60px',
+		display: 'flex',
+		justifyContent: 'center'
 	},
 	header: {
 		display: 'flex',
 		justifyContent: 'center',
+		alignItems: 'center',
 	}
 })

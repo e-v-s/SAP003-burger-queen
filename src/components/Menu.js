@@ -11,10 +11,10 @@ export default function Menu({children, ...props}) {
 
 const style = StyleSheet.create({
 	menu: {
-		marginTop: '20px',
 		display: 'flex',
 		flexDirection: 'column',
 		width: '300px',
-		marginLeft: '60px',
+		fontSize: '20px',
+		fontWeight: 'bold'
 	}
 })

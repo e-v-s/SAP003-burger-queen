@@ -16,6 +16,22 @@ const style = StyleSheet.create({
 		backgroundColor: '#FEBB3E',
 		borderRadius: '4px',
 		width: '300px',
-		fontWeight: 'bold'
-	}
+		fontWeight: 'bold',
+		fontSize: '20px',
+		':active': {
+			backgroundColor: '#fcca6c',
+			color: '#3a3a3a'
+		},
+		':focus': {
+			backgroundColor: '#fcca6c',
+			color: '#3a3a3a'
+		},
+		':target': {
+			backgroundColor: '#fcca6c',
+			color: '#3a3a3a'
+		},
+		'@media (max-width: 900px)': {
+			width: '300px'
+		}
+	},
 })
