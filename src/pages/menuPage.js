@@ -14,14 +14,17 @@ export default function MenuPage(props) {
 	const [menu, setMenu] = useState([])
 	const [tipoDeMenu, setTipoDeMenu] = useState('cafe')
 	const [order, setOrder] = useState([])
-
+	const [name, setName] = useState('')
+	const [table, setTable] = useState(0)
+	
+	
 	useEffect(() => {
 		db.collection('menu').get().then(snap => {
 			const menu = snap.docs.map(doc => doc.data())
 			setMenu(menu)
 		}).catch(err => err)
 	}, [])
-	
+
 	const showMenu = (e) => {
 		setTipoDeMenu(e.target.id)
 	}
@@ -55,10 +58,6 @@ export default function MenuPage(props) {
 	}
 
 	const totalValue = order.reduce((acc, cur) => acc + (cur.valor * cur.quantidade), 0)
-
-	//ESTOU AQUI
-	const [name, setName] = useState('')
-	const [table, setTable] = useState(0)
 	
 	const sendToFirebase = (e) => {
 		e.preventDefault()		
@@ -72,7 +71,8 @@ export default function MenuPage(props) {
 				nomeDoCliente: name,
 				numeroDaMesa: table,
 				pedido: order.map(i => `${i.nome}, ${i.quantidade}`),
-				hora: firebase.firestore.FieldValue.serverTimestamp()
+				hora: firebase.firestore.FieldValue.serverTimestamp(),
+				status: 'Pendente'
 			}).then(() => window.location.reload())			
 		}
 	}
@@ -97,8 +97,7 @@ export default function MenuPage(props) {
 				{
 					['cafe', 'lanche'].filter(m => m === tipoDeMenu).map(categoria => 
 						<Menu key={Math.random()} children={
-							menu.filter(i => i.categoria === categoria).map(i => 
-								<MenuItem onClick={() => addToList(i)} item={i} key={i.nome} />
+							menu.filter(i => i.categoria === categoria).map(i => i.nome === 'Burger simples' || i.nome === 'Burger duplo' ? <MenuItem onClick={() => {addToList(i); openExtras()}} item={i} key={i.nome} /> : <MenuItem onClick={() => addToList(i)} item={i} key={i.nome} />
 								)
 					}/>)
 				}
@@ -135,5 +134,22 @@ const style = StyleSheet.create({
 	},
 	total: {
 		fontSize: '20px'
+	},
+	overlay: {
+		zIndex: '98',
+	  position: 'fixed',
+	  top: '0',
+	  right: '0',
+	  bottom: '0',
+	  left: '0',
+	  display: 'flex',
+	  alignItems: 'center',
+	  justifyContent: 'center',
+	  height: '100%',
+	  width: '100%',
+	  backgroundColor: 'rgba(0, 0, 0, 0.3)',
+	},
+	modal: {
+		zIndex: '99',
 	}
 })

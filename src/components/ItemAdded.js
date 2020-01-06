@@ -3,7 +3,10 @@ import { StyleSheet, css }  from 'aphrodite'
 
 export default function ItemAdded(props) {
 	return (
-			<li className={css(style.listItem)}>{props.item.nome} <button type="button" onClick={props.remove}>-</button>{props.item.quantidade}<button type="button" onClick={props.add}>+</button> <button type="button" id={props.id} onClick={props.onClick}>X</button></li>
+			<li className={css(style.listItem)}>
+				<p>{props.item.nome}</p>
+				<button type="button" onClick={props.remove}>-</button>  {props.item.quantidade}  <button type="button" onClick={props.add}>+</button> <button type="button" id={props.id} onClick={props.onClick}>X</button>
+			</li>
 	)
 }
 
