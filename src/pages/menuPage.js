@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react'
+import ReactDOM from 'react-dom'
 import { db } from '../services/Firebase.js'
 import { StyleSheet, css } from 'aphrodite'
 import firebase from 'firebase'
+import alertify from 'alertifyjs'
 
 import Button from '../components/Button.js'
 import Input from '../components/Input.js'
 import Menu from '../components/Menu.js'
 import MenuItem from '../components/MenuItem.js'
 import ItemAdded from '../components/ItemAdded.js'
+import Modal from '../components/ModalBurger.js'
 
 export default function MenuPage(props) {
 
@@ -66,7 +69,7 @@ export default function MenuPage(props) {
 			numeroDaMesa: table,
 			pedido: order.map(i => `${i.nome}, quantidade: ${i.quantidade}`)
 		}
-		if (window.confirm(`Enviar pedido \nCliente ${pedido.nomeDoCliente} \nMesa ${pedido.numeroDaMesa} \nResumo \n${pedido.pedido}?`)) {
+		if (alertify.success('Pedido enviado')) {
 			db.collection('pedidos').add({
 				nomeDoCliente: name,
 				numeroDaMesa: table,
@@ -77,8 +80,33 @@ export default function MenuPage(props) {
 		}
 	}
 
+	//TO AQUI
+
+	// const [extra, setExtra] = useState({})
+ const [modal, setModal] = useState(false)
+
+
+	// useEffect(() => {
+	// 	db.collection('extra').get().then(snap => {
+	// 		const extra = snap.docs.map(doc => doc.data())
+	// 		setExtra(extra)
+	// 	}).catch(err => err)
+	// }, [])
+
+	//ESTOU AQUI AGORA
+
+	
+
 	return (
 		<div>
+      {
+      	modal && (
+        <Modal
+          title="teste caraio"
+          content="consegui poha"
+          onClose={() => setModal(false)}
+        />)
+      }
 		<section className={css(style.exemplo)}>
 			<form className={css(style.inputSection)} onSubmit={sendToFirebase}>		
 				<Input type='text' id='costumer-name' placeholder='Nome do Cliente' name='client' onChange={(e) => setName(e.target.value)} />
@@ -97,7 +125,7 @@ export default function MenuPage(props) {
 				{
 					['cafe', 'lanche'].filter(m => m === tipoDeMenu).map(categoria => 
 						<Menu key={Math.random()} children={
-							menu.filter(i => i.categoria === categoria).map(i => i.nome === 'Burger simples' || i.nome === 'Burger duplo' ? <MenuItem onClick={() => {addToList(i); openExtras()}} item={i} key={i.nome} /> : <MenuItem onClick={() => addToList(i)} item={i} key={i.nome} />
+							menu.filter(i => i.categoria === categoria).map(i => i.nome === 'Burger simples' || i.nome === 'Burger duplo' ? <MenuItem onClick={() => {addToList(i); setModal(true)}} item={i} key={i.nome} /> : <MenuItem onClick={() => addToList(i)} item={i} key={i.nome} />
 								)
 					}/>)
 				}
