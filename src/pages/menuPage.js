@@ -83,15 +83,21 @@ export default function MenuPage(props) {
 	//TO AQUI
 
 	// const [extra, setExtra] = useState({})
- const [modal, setModal] = useState(false)
+	// const [extraSelect, setExtraSelect] = useState(false)
+	const [modal, setModal] = useState(false)
 
 
 	// useEffect(() => {
 	// 	db.collection('extra').get().then(snap => {
 	// 		const extra = snap.docs.map(doc => doc.data())
 	// 		setExtra(extra)
+	// 		console.log(extra[0].carne)
 	// 	}).catch(err => err)
 	// }, [])
+
+	// const addToListBurger = (item) => {
+	// 	console.log(extra)
+	// }
 
 	//ESTOU AQUI AGORA
 
@@ -101,10 +107,13 @@ export default function MenuPage(props) {
 		<div>
       {
       	modal && (
-        <Modal
-          title="teste caraio"
-          content="consegui poha"
-          onClose={() => setModal(false)}
+      	<Modal
+      		
+      		
+          // option={extra[0].carne.map((item, index) => <><label>{item}</label>
+          // 		<input type={'radio'} key={index} value={item} onChange={(e) => {setExtra(e.target.value); setExtraSelect(true)}} /></>)}
+          // extra={'teste'}
+          onClose={(e) => {setModal(false)}}
         />)
       }
 		<section className={css(style.exemplo)}>

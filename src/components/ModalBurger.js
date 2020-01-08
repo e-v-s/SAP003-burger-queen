@@ -1,15 +1,33 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import ReactDOM from 'react-dom'
 import { StyleSheet, css } from 'aphrodite'
+import { db } from '../services/Firebase.js'
 
-const Modal = ({ title, content, onClose }) => {
+const Modal = (props) => {
+	const [extra, setExtra] = useState({})
+	const [extraSelect, setExtraSelect] = useState(false)
+	
+
+
+	useEffect(() => {
+		db.collection('extra').get().then(snap => {
+			const extra = snap.docs.map(doc => doc.data())
+			setExtra(extra)
+			console.log(extra[0].carne)
+		}).catch(err => err)
+	}, [])
+
 	return(
 		<div className={css(style.modalOverlay)}>
+		<form>
       <div className={css(style.modal)}>
-        <h2>{title}</h2>
-        <p>{content}</p>
-        <button onClick={onClose}>X</button>
+      	<h1>Burger</h1>
+      	{props.options}
+        <h1>Extras</h1>
+        {props.extra}
+        <button type="button" onClick={props.onClose}>OK</button>
       </div>
+      </form>
     </div>
 	)
 }
