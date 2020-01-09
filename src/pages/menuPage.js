@@ -98,8 +98,14 @@ export default function MenuPage(props) {
 
 	//ESTOU AQUI AGORA
 	const teste = (burger, ovoOuQueijo) => {
-		setOrderExtra([...orderExtra, {tipo: burger, extra: ovoOuQueijo}])	
+		setOrderExtra([...orderExtra, {tipo: burger, extra: ovoOuQueijo}])
 	}
+
+	// const teste2 = () => {
+	// 	setOrder([...order, orderExtra])
+	// }
+
+	console.log(order)
 	
 	if (orderExtra) {
 		orderExtra.map(i => {
