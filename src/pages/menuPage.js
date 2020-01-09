@@ -19,12 +19,23 @@ export default function MenuPage(props) {
 	const [order, setOrder] = useState([])
 	const [name, setName] = useState('')
 	const [table, setTable] = useState(0)
-	
+	const [extraSelect, setExtraSelect] = useState(false)
+	const [modal, setModal] = useState(false)
+	const [extra, setExtra] = useState({})
+	const [orderExtra, setOrderExtra] = useState('')
+	let totalValue = order.reduce((acc, cur) => acc + (cur.valor * cur.quantidade), 0)
 	
 	useEffect(() => {
 		db.collection('menu').get().then(snap => {
 			const menu = snap.docs.map(doc => doc.data())
 			setMenu(menu)
+		}).catch(err => err)
+	}, [])
+
+	useEffect(() => {
+		db.collection('extra').get().then(snap => {
+			const extra = snap.docs.map(doc => doc.data())
+			setExtra(extra)
 		}).catch(err => err)
 	}, [])
 
@@ -40,7 +51,7 @@ export default function MenuPage(props) {
 			order[itemIndex].quantidade++
 			setOrder([...order])
 		}
- 	}
+ 	}			
 
 	const trash = (item) => {
 		const itemIndex = order.findIndex(orderItem => orderItem.nome === item.nome);
@@ -59,8 +70,6 @@ export default function MenuPage(props) {
 		order[itemIndex].quantidade--
 		setOrder([...order])
 	}
-
-	const totalValue = order.reduce((acc, cur) => acc + (cur.valor * cur.quantidade), 0)
 	
 	const sendToFirebase = (e) => {
 		e.preventDefault()		
@@ -87,21 +96,17 @@ export default function MenuPage(props) {
 		}
 	}
 
-	const [extraSelect, setExtraSelect] = useState(false)
-	const [modal, setModal] = useState(false)
-	const [extra, setExtra] = useState({})
-
-	useEffect(() => {
-		db.collection('extra').get().then(snap => {
-			const extra = snap.docs.map(doc => doc.data())
-			setExtra(extra)
-		}).catch(err => err)
-	}, [])
-
 	//ESTOU AQUI AGORA
-	const [orderExtra, setOrderExtra] = useState('')
 	const teste = (burger, ovoOuQueijo) => {
-		setOrderExtra([...orderExtra, {tipo: burger, extra: ovoOuQueijo}])		
+		setOrderExtra([...orderExtra, {tipo: burger, extra: ovoOuQueijo}])	
+	}
+	
+	if (orderExtra) {
+		orderExtra.map(i => {
+			if(i.extra !== '') {
+				totalValue = totalValue+1
+			}
+		})
 	}
 
 

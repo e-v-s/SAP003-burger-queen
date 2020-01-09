@@ -26,7 +26,7 @@ export default function KitchenPage() {
 			<h1 className={css(style.size)}>Pedidos</h1>
 			<ul className={css(style.listaDePedidos)}>
 				{
-					pedidos.map((item, index) => item.status !== 'Pronto' ? <OrderItem item={item} key={index} pedido={item.pedido} onClick={() => pedidoPronto(item)} /> : null)
+					pedidos.map((item, index) => item.status !== 'Pronto' ? <OrderItem item={item} key={index} pedido={item} onClick={() => pedidoPronto(item)} /> : null)
 				}
 			</ul>
 		</div>
