@@ -64,56 +64,56 @@ export default function MenuPage(props) {
 	
 	const sendToFirebase = (e) => {
 		e.preventDefault()		
-		const pedido = {
-			nomeDoCliente: name,
-			numeroDaMesa: table,
-			pedido: order.map(i => `${i.nome}, quantidade: ${i.quantidade}`)
-		}
 		if (alertify.success('Pedido enviado')) {
-			db.collection('pedidos').add({
+			if (orderExtra) {
+				db.collection('pedidos').add({
+				nomeDoCliente: name,
+				numeroDaMesa: table,
+				pedido: order.map(i => `${i.nome}, ${i.quantidade}`),
+				tipoDeBurger: orderExtra.map(i => `${i.tipo}`),
+				extra: orderExtra.map(i => `${i.extra}`),
+				hora: firebase.firestore.FieldValue.serverTimestamp(),
+				status: 'Pendente'
+				}).then(() => window.location.reload())
+			} else {
+				db.collection('pedidos').add({
 				nomeDoCliente: name,
 				numeroDaMesa: table,
 				pedido: order.map(i => `${i.nome}, ${i.quantidade}`),
 				hora: firebase.firestore.FieldValue.serverTimestamp(),
 				status: 'Pendente'
-			}).then(() => window.location.reload())			
+				}).then(() => window.location.reload())
+			}			
 		}
 	}
 
-	//TO AQUI
-
-	// const [extra, setExtra] = useState({})
-	// const [extraSelect, setExtraSelect] = useState(false)
+	const [extraSelect, setExtraSelect] = useState(false)
 	const [modal, setModal] = useState(false)
+	const [extra, setExtra] = useState({})
 
-
-	// useEffect(() => {
-	// 	db.collection('extra').get().then(snap => {
-	// 		const extra = snap.docs.map(doc => doc.data())
-	// 		setExtra(extra)
-	// 		console.log(extra[0].carne)
-	// 	}).catch(err => err)
-	// }, [])
-
-	// const addToListBurger = (item) => {
-	// 	console.log(extra)
-	// }
+	useEffect(() => {
+		db.collection('extra').get().then(snap => {
+			const extra = snap.docs.map(doc => doc.data())
+			setExtra(extra)
+		}).catch(err => err)
+	}, [])
 
 	//ESTOU AQUI AGORA
+	const [orderExtra, setOrderExtra] = useState('')
+	const teste = (burger, ovoOuQueijo) => {
+		setOrderExtra([...orderExtra, {tipo: burger, extra: ovoOuQueijo}])		
+	}
 
-	
 
 	return (
 		<div>
       {
       	modal && (
-      	<Modal
-      		
-      		
-          // option={extra[0].carne.map((item, index) => <><label>{item}</label>
-          // 		<input type={'radio'} key={index} value={item} onChange={(e) => {setExtra(e.target.value); setExtraSelect(true)}} /></>)}
-          // extra={'teste'}
-          onClose={(e) => {setModal(false)}}
+      	<Modal      		
+          option={extra}
+          extra={'teste'}
+          onClose={(burger, ovoOuQueijo) => {setModal(false); teste(burger, ovoOuQueijo)}}
+
         />)
       }
 		<section className={css(style.exemplo)}>

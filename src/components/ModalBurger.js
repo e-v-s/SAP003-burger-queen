@@ -1,33 +1,27 @@
 import React, { useState, useEffect } from 'react'
-import ReactDOM from 'react-dom'
 import { StyleSheet, css } from 'aphrodite'
-import { db } from '../services/Firebase.js'
+import { Button, Radio, Form } from 'semantic-ui-react'
 
 const Modal = (props) => {
-	const [extra, setExtra] = useState({})
-	const [extraSelect, setExtraSelect] = useState(false)
-	
-
-
-	useEffect(() => {
-		db.collection('extra').get().then(snap => {
-			const extra = snap.docs.map(doc => doc.data())
-			setExtra(extra)
-			console.log(extra[0].carne)
-		}).catch(err => err)
-	}, [])
+	const [burger, setBurger] = useState('')
+	const [ovoOuQueijo, setOvoOuQueijo] = useState('')
 
 	return(
 		<div className={css(style.modalOverlay)}>
-		<form>
       <div className={css(style.modal)}>
+			<Form>
       	<h1>Burger</h1>
-      	{props.options}
+      	{
+      		props.option[0].carne.map((item, index) => <Form.Radio label={item} checked={burger === item} key={index} onClick={() => setBurger(item)}  value={item}/>)
+      	}
         <h1>Extras</h1>
-        {props.extra}
-        <button type="button" onClick={props.onClose}>OK</button>
+        {
+        	props.option[0].extra.nome.map((item, index) => <Form.Radio label={item} checked={ovoOuQueijo === item} key={index} onClick={() => setOvoOuQueijo(item)}  value={item}/>)
+        }
+        <br/>
+        <Button type="button" onClick={() => props.onClose(burger, ovoOuQueijo)}>OK</Button>
+      </Form>
       </div>
-      </form>
     </div>
 	)
 }
