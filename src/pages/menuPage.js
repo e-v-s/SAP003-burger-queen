@@ -46,7 +46,7 @@ export default function MenuPage(props) {
 	const addToList = (item) => {	
 		const itemIndex = order.findIndex(orderItem => orderItem.nome === item.nome);
 		if (itemIndex === -1) {
-			setOrder([...order, {...item, quantidade: 1}])
+			setOrder([...order, {...item, quantidade: 1, tipo:'', extra:''}])
 		} else {
 			order[itemIndex].quantidade++
 			setOrder([...order])
@@ -74,47 +74,34 @@ export default function MenuPage(props) {
 	const sendToFirebase = (e) => {
 		e.preventDefault()		
 		if (alertify.success('Pedido enviado')) {
-			if (orderExtra) {
 				db.collection('pedidos').add({
 				nomeDoCliente: name,
 				numeroDaMesa: table,
-				pedido: order.map(i => `${i.nome}, ${i.quantidade}`),
-				tipoDeBurger: orderExtra.map(i => `${i.tipo}`),
-				extra: orderExtra.map(i => `${i.extra}`),
+				pedido: order.map(i => `${i.nome}, ${i.tipo}, ${i.extra}, ${i.quantidade}`),
 				hora: firebase.firestore.FieldValue.serverTimestamp(),
 				status: 'Pendente'
-				}).then(() => window.location.reload())
-			} else {
-				db.collection('pedidos').add({
-				nomeDoCliente: name,
-				numeroDaMesa: table,
-				pedido: order.map(i => `${i.nome}, ${i.quantidade}`),
-				hora: firebase.firestore.FieldValue.serverTimestamp(),
-				status: 'Pendente'
-				}).then(() => window.location.reload())
-			}			
+				}).then(() => window.location.reload())				
 		}
 	}
 
-	//ESTOU AQUI AGORA
-	const teste = (burger, ovoOuQueijo) => {
-		setOrderExtra([...orderExtra, {tipo: burger, extra: ovoOuQueijo}])
+	const updateExtras = (burger, ovoOuQueijo) => {
+		setOrder([...order, {nome:'', tipo: burger, extra: `com ${ovoOuQueijo}`, quantidade:1, valor: 1}])
 	}
 
-	// const teste2 = () => {
-	// 	setOrder([...order, orderExtra])
-	// }
+	// AGORA ESTOU AQUI 
 
-	console.log(order)
-	
-	if (orderExtra) {
-		orderExtra.map(i => {
-			if(i.extra !== '') {
-				totalValue = totalValue+1
-			}
-		})
+	const [pedidosProntos, setPedidosProntos] = useState([])
+
+	useEffect(() => {
+		db.collection('pedidos').orderBy("hora", "desc").get().then(snap => {
+			const pedidosProntos = snap.docs.map(doc => doc.data())
+			setPedidosProntos(pedidosProntos)
+		}).catch(err => err)
+	},[])
+
+	const pedidoEntregue = () => {
+		console.log('ok')
 	}
-
 
 	return (
 		<div>
@@ -123,9 +110,12 @@ export default function MenuPage(props) {
       	<Modal      		
           option={extra}
           extra={'teste'}
-          onClose={(burger, ovoOuQueijo) => {setModal(false); teste(burger, ovoOuQueijo)}}
+          onClose={(burger, ovoOuQueijo) => {setModal(false); updateExtras(burger, ovoOuQueijo)}}
 
         />)
+      }
+      {
+      	pedidosProntos.map(i => i.status === 'Pronto' ? <button type='button' onClick={() => pedidoEntregue()}>Mesa {i.numeroDaMesa}<span> - pedido {i.status}</span></button> : null)
       }
 		<section className={css(style.exemplo)}>
 			<form className={css(style.inputSection)} onSubmit={sendToFirebase}>		

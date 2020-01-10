@@ -9,7 +9,7 @@ export default function KitchenPage() {
 	const [pedidos, setPedidos] = useState([])
 
 	useEffect(() => {
-		db.collection('pedidos').orderBy("hora", "asc").get().then(snap => {
+		db.collection('pedidos').orderBy("hora", "desc").get().then(snap => {
 			const pedidos = snap.docs.map(doc => doc.data())
 			setPedidos(pedidos)
 		}).catch(err => err)

@@ -19,7 +19,7 @@ const Modal = (props) => {
         	props.option[0].extra.nome.map((item, index) => <Form.Radio label={item} checked={ovoOuQueijo === item} key={index} onClick={() => setOvoOuQueijo(item)}  value={item}/>)
         }
         <br/>
-        <Button type="button" onClick={() => props.onClose(burger, ovoOuQueijo)}>OK</Button>
+        <Button type="button" onClick={() => burger || ovoOuQueijo ? props.onClose(burger, ovoOuQueijo) : props.onClose()}>OK</Button>
       </Form>
       </div>
     </div>

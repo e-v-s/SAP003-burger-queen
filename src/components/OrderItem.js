@@ -7,14 +7,8 @@ const OrderItem = (props) => {
 			<p className={css(style.size)}>Cliente: {props.item.nomeDoCliente}</p>
 			<p className={css(style.size)}>Mesa: {props.item.numeroDaMesa}</p>			
 			{
-				props.pedido.pedido.map((item, index) => <p className={css(style.size)} key={index}>{item}</p>)
+				props.pedido.pedido.map((item, index) => <p className={css(style.size)} key={index}>{item.replace(/,/g, '')}</p>)
 			}
-			{
-				props.pedido.extra ? props.pedido.extra.map((item) => <p className={css(style.size)}>Extra: {item}</p>) : null
-			}
-			{
-				props.pedido.tipoDeBurger ? props.pedido.tipoDeBurger.map((item) => <p className={css(style.size)}>Tipo de Burger: {item}</p>) : null
-			}		
 			<button className={css(style.btnPedido)} onClick={props.onClick}>{props.item.status}</button>			
 		</li>
 	)
