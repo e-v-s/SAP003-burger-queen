@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import ReactDOM from 'react-dom'
 import { db } from '../services/Firebase.js'
 import { StyleSheet, css } from 'aphrodite'
 import firebase from 'firebase'
@@ -19,10 +18,9 @@ export default function MenuPage(props) {
 	const [order, setOrder] = useState([])
 	const [name, setName] = useState('')
 	const [table, setTable] = useState(0)
-	const [extraSelect, setExtraSelect] = useState(false)
 	const [modal, setModal] = useState(false)
 	const [extra, setExtra] = useState({})
-	const [orderExtra, setOrderExtra] = useState('')
+	const [pedidosProntos, setPedidosProntos] = useState([])
 	let totalValue = order.reduce((acc, cur) => acc + (cur.valor * cur.quantidade), 0)
 	
 	useEffect(() => {
@@ -37,6 +35,13 @@ export default function MenuPage(props) {
 			const extra = snap.docs.map(doc => doc.data())
 			setExtra(extra)
 		}).catch(err => err)
+	}, [])
+
+	useEffect(() => {
+		db.collection('pedidos').orderBy("hora", "desc").onSnapshot(snap => {
+			const pedidosProntos = snap.docs.map(doc => [doc.id, doc.data()])
+			setPedidosProntos(pedidosProntos)
+		})
 	}, [])
 
 	const showMenu = (e) => {
@@ -89,18 +94,9 @@ export default function MenuPage(props) {
 	}
 
 	// AGORA ESTOU AQUI 
-
-	const [pedidosProntos, setPedidosProntos] = useState([])
-
-	useEffect(() => {
-		db.collection('pedidos').orderBy("hora", "desc").get().then(snap => {
-			const pedidosProntos = snap.docs.map(doc => doc.data())
-			setPedidosProntos(pedidosProntos)
-		}).catch(err => err)
-	},[])
-
-	const pedidoEntregue = () => {
-		console.log('ok')
+	const pedidoEntregue = (item) => {
+		const update = db.collection('pedidos').doc(`${item}`)
+		update.get().then(snap => snap.ref.update({status: 'Entregue'}))
 	}
 
 	return (
@@ -114,33 +110,35 @@ export default function MenuPage(props) {
 
         />)
       }
-      {
-      	pedidosProntos.map(i => i.status === 'Pronto' ? <button type='button' onClick={() => pedidoEntregue()}>Mesa {i.numeroDaMesa}<span> - pedido {i.status}</span></button> : null)
-      }
-		<section className={css(style.exemplo)}>
-			<form className={css(style.inputSection)} onSubmit={sendToFirebase}>		
-				<Input type='text' id='costumer-name' placeholder='Nome do Cliente' name='client' onChange={(e) => setName(e.target.value)} />
-				<Input type='number' id='costumer-number' placeholder='Número da mesa' name='table' onChange={(e) => setTable(e.target.value)} />
-				<ul id='order-list'>
+      <section className={css(style.orderSection)}>
+	      {
+	      	pedidosProntos.map((i, index) => i[1].status === 'Pronto' ? <button className={css(style.orders)} type='button' onClick={() => pedidoEntregue(i[0])} key={index}>Mesa {i[1].numeroDaMesa}<br/><span>{i[1].nomeDoCliente}</span><br/><span>{i[1].status}</span></button> : null)
+	      }
+      </section>
+			<section className={css(style.exemplo)}>
+				<form className={css(style.inputSection)} onSubmit={sendToFirebase}>		
+					<Input type='text' id='costumer-name' placeholder='Nome do Cliente' name='client' onChange={(e) => setName(e.target.value)} />
+					<Input type='number' id='costumer-number' placeholder='Número da mesa' name='table' onChange={(e) => setTable(e.target.value)} />
+					<ul id='order-list'>
+						{
+							order.map((item, index) => <ItemAdded key={index} item={item} remove={()=> remove(item)} onClick={() => trash(item)} add={()=> adiciona(item)} name='order' />)
+						}
+					</ul>
+					<p className={css(style.total)}>Total: {totalValue}</p>
+					<Button children='Enviar pedido' id='enviar-pedido' value='Submit' type='submit' />
+				</form>			
+				<section className={css(style.buttonMenu)}>
+					<Button children='Café da Manhã' id='cafe' onClick={showMenu} />
+					<Button children='Lanches' id='lanche' onClick={showMenu} />
 					{
-						order.map((item, index) => <ItemAdded key={index} item={item} remove={()=> remove(item)} onClick={() => trash(item)} add={()=> adiciona(item)} name='order' />)
+						['cafe', 'lanche'].filter(m => m === tipoDeMenu).map(categoria => 
+							<Menu key={Math.random()} children={
+								menu.filter(i => i.categoria === categoria).map(i => i.nome === 'Burger simples' || i.nome === 'Burger duplo' ? <MenuItem onClick={() => {addToList(i); setModal(true)}} item={i} key={i.nome} /> : <MenuItem onClick={() => addToList(i)} item={i} key={i.nome} />
+									)
+						}/>)
 					}
-				</ul>
-				<p className={css(style.total)}>Total: {totalValue}</p>
-				<Button children='Enviar pedido' id='enviar-pedido' value='Submit' type='submit' />
-			</form>			
-			<section className={css(style.buttonMenu)}>
-				<Button children='Café da Manhã' id='cafe' onClick={showMenu} />
-				<Button children='Lanches' id='lanche' onClick={showMenu} />
-				{
-					['cafe', 'lanche'].filter(m => m === tipoDeMenu).map(categoria => 
-						<Menu key={Math.random()} children={
-							menu.filter(i => i.categoria === categoria).map(i => i.nome === 'Burger simples' || i.nome === 'Burger duplo' ? <MenuItem onClick={() => {addToList(i); setModal(true)}} item={i} key={i.nome} /> : <MenuItem onClick={() => addToList(i)} item={i} key={i.nome} />
-								)
-					}/>)
-				}
+				</section>
 			</section>
-		</section>
 		</div>
 	)
 }
@@ -189,5 +187,20 @@ const style = StyleSheet.create({
 	},
 	modal: {
 		zIndex: '99',
+	}, 
+	orders: {
+		cursor: 'pointer',
+		margin: '10px',
+		border: '1px solid black',
+		padding: '20px',
+		background:'#ff4d4d',
+		fontSize: '20px',
+		width: '100px',
+		flexWrap: 'wrap'
+	},
+	orderSection: {
+		display:'flex',
+		justifyContent: 'center',
+		marginTop: '20px',
 	}
 })

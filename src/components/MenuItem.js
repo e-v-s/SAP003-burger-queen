@@ -3,7 +3,7 @@ import { StyleSheet, css } from 'aphrodite'
 
 export default function MenuItem({...props}) {
 	return (
-		<a {...props} className={css(style.food)}>{props.item.nome} <span role="img" aria-label="emoji de hamburger">&#127828;</span> R$ {props.item.valor},00</a>
+		<button {...props} className={css(style.food)}>{props.item.nome} <span role="img" aria-label="emoji de hamburger">&#127828;</span> R$ {props.item.valor},00</button>
 	)
 }
 

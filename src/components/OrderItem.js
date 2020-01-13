@@ -5,7 +5,7 @@ const OrderItem = (props) => {
 	return (
 		<li className={css(style.pedido)} key={props.item.key}>
 			<p className={css(style.size)}>Cliente: {props.item.nomeDoCliente}</p>
-			<p className={css(style.size)}>Mesa: {props.item.numeroDaMesa}</p>			
+			<p className={css(style.size)}>Mesa: {props.item.numeroDaMesa}</p>
 			{
 				props.pedido.pedido.map((item, index) => <p className={css(style.size)} key={index}>{item.replace(/,/g, '')}</p>)
 			}

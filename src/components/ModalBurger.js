@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, css } from 'aphrodite'
-import { Button, Radio, Form } from 'semantic-ui-react'
+import { Button, Form } from 'semantic-ui-react'
 
 const Modal = (props) => {
 	const [burger, setBurger] = useState('')
