@@ -17,4 +17,3 @@ const style = StyleSheet.create({
 		width: '300px',
 	}
 })
-

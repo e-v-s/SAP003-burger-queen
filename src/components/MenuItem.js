@@ -12,7 +12,7 @@ const style = StyleSheet.create({
 		cursor: 'pointer',
 		margin: '10px',
 		border: '1px solid black',
-		padding: '20px'
+		padding: '20px',
+		fontSize: '20px'
 	}
 })
-

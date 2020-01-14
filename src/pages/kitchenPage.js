@@ -6,16 +6,16 @@ import firebase from 'firebase'
 import OrderItem from '../components/OrderItem.js'
 
 export default function KitchenPage() {	
-	const [pedidos, setPedidos] = useState([])
+	const [orders, setOrders] = useState([])
 
 	useEffect(() => {
 		db.collection('pedidos').orderBy("hora", "desc").onSnapshot(snap => {
-			const pedidos = snap.docs.map(doc => doc.data())
-			setPedidos(pedidos)
+			const orders = snap.docs.map(doc => doc.data())
+			setOrders(orders)
 		})
 	}, [])
 
-	const pedidoPronto = (item) => {
+	const orderOk = (item) => {
 		const update = db.collection('pedidos').where('pedido', '==', item.pedido)
 		update.onSnapshot(snap => snap.forEach(doc => doc.ref.update({status: 'Pronto', horaQueFicouPronto: firebase.firestore.FieldValue.serverTimestamp()})))
 	}
@@ -25,7 +25,7 @@ export default function KitchenPage() {
 			<h1 className={css(style.size)}>Pedidos</h1>
 			<ul className={css(style.listaDePedidos)}>
 				{
-					pedidos.map((item, index) => item.status === 'Pendente' ? <OrderItem item={item} key={index} pedido={item} onClick={() => pedidoPronto(item)} /> : null)
+					orders.map((item, index) => item.status === 'Pendente' ? <OrderItem item={item} key={index} pedido={item} onClick={() => orderOk(item)} /> : null)
 				}
 			</ul>
 		</div>

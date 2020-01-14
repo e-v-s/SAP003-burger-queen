@@ -12,15 +12,14 @@ import ItemAdded from '../components/ItemAdded.js'
 import Modal from '../components/ModalBurger.js'
 
 export default function MenuPage(props) {
-
 	const [menu, setMenu] = useState([])
-	const [tipoDeMenu, setTipoDeMenu] = useState('cafe')
+	const [menuType, setMenuType] = useState('cafe')
 	const [order, setOrder] = useState([])
 	const [name, setName] = useState('')
 	const [table, setTable] = useState(0)
 	const [modal, setModal] = useState(false)
 	const [extra, setExtra] = useState({})
-	const [pedidosProntos, setPedidosProntos] = useState([])
+	const [ordersOk, setOrdersOk] = useState([])
 	let totalValue = order.reduce((acc, cur) => acc + (cur.valor * cur.quantidade), 0)
 	
 	useEffect(() => {
@@ -29,25 +28,22 @@ export default function MenuPage(props) {
 			setMenu(menu)
 		}).catch(err => err)
 	}, [])
-
 	useEffect(() => {
 		db.collection('extra').get().then(snap => {
 			const extra = snap.docs.map(doc => doc.data())
 			setExtra(extra)
 		}).catch(err => err)
 	}, [])
-
 	useEffect(() => {
 		db.collection('pedidos').orderBy("hora", "desc").onSnapshot(snap => {
-			const pedidosProntos = snap.docs.map(doc => [doc.id, doc.data()])
-			setPedidosProntos(pedidosProntos)
+			const ordersOk = snap.docs.map(doc => [doc.id, doc.data()])
+			setOrdersOk(ordersOk)
 		})
 	}, [])
 
 	const showMenu = (e) => {
-		setTipoDeMenu(e.target.id)
+		setMenuType(e.target.id)
 	}
-
 	const addToList = (item) => {	
 		const itemIndex = order.findIndex(orderItem => orderItem.nome === item.nome);
 		if (itemIndex === -1) {
@@ -56,26 +52,22 @@ export default function MenuPage(props) {
 			order[itemIndex].quantidade++
 			setOrder([...order])
 		}
- 	}			
-
+ 	}
 	const trash = (item) => {
 		const itemIndex = order.findIndex(orderItem => orderItem.nome === item.nome);
 		order.splice(itemIndex, 1)
 		setOrder([...order])
 	}
-
-	const adiciona=(item) => {
+	const add = (item) => {
 		const itemIndex = order.findIndex(orderItem => orderItem.nome === item.nome)
 		order[itemIndex].quantidade++
 		setOrder([...order])
 	}
-
 	const remove = (item) => {
 		const itemIndex = order.findIndex(orderItem => orderItem.nome === item.nome)
 		order[itemIndex].quantidade--
 		setOrder([...order])
 	}
-	
 	const sendToFirebase = (e) => {
 		e.preventDefault()		
 		if (alertify.success('Pedido enviado')) {
@@ -88,13 +80,10 @@ export default function MenuPage(props) {
 				}).then(() => window.location.reload())				
 		}
 	}
-
 	const updateExtras = (burger, ovoOuQueijo) => {
 		setOrder([...order, {nome:'', tipo: burger, extra: `com ${ovoOuQueijo}`, quantidade:1, valor: 1}])
 	}
-
-	// AGORA ESTOU AQUI 
-	const pedidoEntregue = (item) => {
+	const orderDelivered = (item) => {
 		const update = db.collection('pedidos').doc(`${item}`)
 		update.get().then(snap => snap.ref.update({status: 'Entregue'}))
 	}
@@ -107,12 +96,11 @@ export default function MenuPage(props) {
           option={extra}
           extra={'teste'}
           onClose={(burger, ovoOuQueijo) => {setModal(false); updateExtras(burger, ovoOuQueijo)}}
-
         />)
       }
       <section className={css(style.orderSection)}>
 	      {
-	      	pedidosProntos.map((i, index) => i[1].status === 'Pronto' ? <button className={css(style.orders)} type='button' onClick={() => pedidoEntregue(i[0])} key={index}>Mesa {i[1].numeroDaMesa}<br/><span>{i[1].nomeDoCliente}</span><br/><span>{i[1].status}</span></button> : null)
+	      	ordersOk.map((i, index) => i[1].status === 'Pronto' ? <button className={css(style.orders)} type='button' onClick={() => orderDelivered(i[0])} key={index}>Mesa {i[1].numeroDaMesa}<br/><span>{i[1].nomeDoCliente}</span><br/><span>{i[1].status}</span></button> : null)
 	      }
       </section>
 			<section className={css(style.exemplo)}>
@@ -121,7 +109,7 @@ export default function MenuPage(props) {
 					<Input type='number' id='costumer-number' placeholder='Número da mesa' name='table' onChange={(e) => setTable(e.target.value)} />
 					<ul id='order-list'>
 						{
-							order.map((item, index) => <ItemAdded key={index} item={item} remove={()=> remove(item)} onClick={() => trash(item)} add={()=> adiciona(item)} name='order' />)
+							order.map((item, index) => <ItemAdded key={index} item={item} remove={()=> remove(item)} onClick={() => trash(item)} add={()=> add(item)} name='order' />)
 						}
 					</ul>
 					<p className={css(style.total)}>Total: {totalValue}</p>
@@ -131,7 +119,7 @@ export default function MenuPage(props) {
 					<Button children='Café da Manhã' id='cafe' onClick={showMenu} />
 					<Button children='Lanches' id='lanche' onClick={showMenu} />
 					{
-						['cafe', 'lanche'].filter(m => m === tipoDeMenu).map(categoria => 
+						['cafe', 'lanche'].filter(m => m === menuType).map(categoria => 
 							<Menu key={Math.random()} children={
 								menu.filter(i => i.categoria === categoria).map(i => i.nome === 'Burger simples' || i.nome === 'Burger duplo' ? <MenuItem onClick={() => {addToList(i); setModal(true)}} item={i} key={i.nome} /> : <MenuItem onClick={() => addToList(i)} item={i} key={i.nome} />
 									)
@@ -195,7 +183,7 @@ const style = StyleSheet.create({
 		padding: '20px',
 		background:'#ff4d4d',
 		fontSize: '20px',
-		width: '100px',
+		width: '120px',
 		flexWrap: 'wrap'
 	},
 	orderSection: {
