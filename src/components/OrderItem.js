@@ -9,7 +9,7 @@ const OrderItem = (props) => {
 			{
 				props.pedido.pedido.map((item, index) => <p className={css(style.size)} key={index}>{item.replace(/,/g, '')}</p>)
 			}
-			<button className={css(style.btnPedido)} onClick={props.onClick}>{props.item.status}</button>			
+			<button className={props.className} onClick={props.onClick}>{props.item.status}</button>			
 		</li>
 	)
 }
@@ -30,13 +30,5 @@ const style = StyleSheet.create({
 		fontSize: '20px',
 		lineHeight: '2px',
 		margin: '15px'
-	},
-	btnPedido: {
-		width: '300px',
-		height: '80px',
-		fontSize: '30px',
-		backgroundColor: '#fff',
-		color: 'red',
-		fontWeight: 'bold'
-	}
+	}	
 })
