@@ -1,12 +1,6 @@
 import React from 'react'
 import { StyleSheet, css } from 'aphrodite'
 
-export default function Input({...props}) {
-	return (
-		<input {...props} className={css(style.input)}></input>
-	)
-}
-
 const style = StyleSheet.create({
 	input: {
 		border: 'none',
@@ -17,3 +11,9 @@ const style = StyleSheet.create({
 		width: '300px',
 	}
 })
+
+export default function Input({...props}) {
+	return (
+		<input {...props} className={css(style.input)}></input>
+	)
+}

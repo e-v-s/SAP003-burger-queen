@@ -1,14 +1,6 @@
 import React from 'react'
 import { StyleSheet, css } from 'aphrodite'
 
-export default function Menu({children, ...props}) {
-	return (
-		<section {...props} className={css(style.menu)}>
-			{children}
-		</section>
-	)
-}
-
 const style = StyleSheet.create({
 	menu: {
 		display: 'flex',
@@ -18,3 +10,11 @@ const style = StyleSheet.create({
 		fontWeight: 'bold'
 	}
 })
+
+export default function Menu({children, ...props}) {
+	return (
+		<section {...props} className={css(style.menu)}>
+			{children}
+		</section>
+	)
+}

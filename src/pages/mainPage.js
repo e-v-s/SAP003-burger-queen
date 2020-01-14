@@ -2,15 +2,6 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { StyleSheet, css } from 'aphrodite'
 
-export default function MainPage() {
-	return (
-		<div className={css(styles.flex)}>
-			<Link to={'/menu'} className={css(styles.link)}>Salão</Link>
-			<Link to={'/kitchen'} className={css(styles.link)}>Cozinha</Link>
-		</div>
-	)
-}
-
 const styles = StyleSheet.create({
 	link: {
 		color: '#000',
@@ -33,3 +24,12 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 	}
 })
+
+export default function MainPage() {
+	return (
+		<div className={css(styles.flex)}>
+			<Link to={'/menu'} className={css(styles.link)}>Salão</Link>
+			<Link to={'/kitchen'} className={css(styles.link)}>Cozinha</Link>
+		</div>
+	)
+}

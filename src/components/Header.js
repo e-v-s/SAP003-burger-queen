@@ -1,14 +1,6 @@
 import React from 'react'
 import { StyleSheet, css } from 'aphrodite'
 
-export default function Header() {
-	return (
-		<header className={css(style.header)}>
-			<a href='/'><img className={css(style.headerImg)} src='logo.png' alt='Logo do estabelecimento, onde está escrito Burger Queen' /></a>
-		</header>
-	)
-}
-
 const style = StyleSheet.create({
 	headerImg: {
 		height: '200px',
@@ -22,3 +14,11 @@ const style = StyleSheet.create({
 		alignItems: 'center',
 	}
 })
+
+export default function Header() {
+	return (
+		<header className={css(style.header)}>
+			<a href='/'><img className={css(style.headerImg)} src='logo.png' alt='Logo do estabelecimento, onde está escrito Burger Queen' /></a>
+		</header>
+	)
+}

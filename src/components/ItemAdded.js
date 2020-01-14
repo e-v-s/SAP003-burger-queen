@@ -1,6 +1,16 @@
 import React from 'react'
 import { StyleSheet, css }  from 'aphrodite'
 
+const style = StyleSheet.create({
+	listItem: {
+		listStyle: 'none',
+		fontSize: '30px'
+	},
+	sizeMin: {
+		fontSize: '20px',
+	}
+})
+
 export default function ItemAdded(props) {
 	return (			
 				props.item.tipo || props.item.extra ? 
@@ -17,13 +27,3 @@ export default function ItemAdded(props) {
 			</li>			
 	)
 }
-
-const style = StyleSheet.create({
-	listItem: {
-		listStyle: 'none',
-		fontSize: '30px'
-	},
-	sizeMin: {
-		fontSize: '20px',
-	}
-})

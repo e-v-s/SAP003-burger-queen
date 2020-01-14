@@ -2,6 +2,27 @@ import React, { useState } from 'react'
 import { StyleSheet, css } from 'aphrodite'
 import { Button, Form } from 'semantic-ui-react'
 
+const style = StyleSheet.create({
+	modalOverlay: {
+		alignItems: 'center',
+	  justifyContent: 'center',
+	  backgroundColor: 'rgba(0, 0, 0, 0.65)',
+	  display: 'flex',
+	  padding: '1em',
+	  position: 'fixed',
+	  top: '0',
+	  left: '0',
+	  height: '100%',
+	  width: '100%',
+	},
+	modal: {
+		backgroundColor: 'white',
+	  borderRadius: '3px',
+	  padding: '2rem 3rem',
+	  textAlign: 'center',
+	}
+})
+
 const Modal = (props) => {
 	const [burger, setBurger] = useState('')
 	const [ovoOuQueijo, setOvoOuQueijo] = useState('')
@@ -27,24 +48,3 @@ const Modal = (props) => {
 }
 
 export default Modal
-
-const style = StyleSheet.create({
-	modalOverlay: {
-		alignItems: 'center',
-	  justifyContent: 'center',
-	  backgroundColor: 'rgba(0, 0, 0, 0.65)',
-	  display: 'flex',
-	  padding: '1em',
-	  position: 'fixed',
-	  top: '0',
-	  left: '0',
-	  height: '100%',
-	  width: '100%',
-	},
-	modal: {
-		backgroundColor: 'white',
-	  borderRadius: '3px',
-	  padding: '2rem 3rem',
-	  textAlign: 'center',
-	}
-})

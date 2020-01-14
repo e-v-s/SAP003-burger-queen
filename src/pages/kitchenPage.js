@@ -5,6 +5,33 @@ import firebase from 'firebase'
 
 import OrderItem from '../components/OrderItem.js'
 
+const style = StyleSheet.create({
+	listaDePedidos: {
+		display: 'flex',
+		flexWrap: 'wrap',
+		justifyContent: 'space-evenly'
+	},
+	size: {
+		textAlign: 'center'
+	},
+	btnPedido: {
+		width: '300px',
+		height: '80px',
+		fontSize: '30px',
+		backgroundColor: '#fff',
+		color: 'red',
+		fontWeight: 'bold'
+	},
+	pronto: {
+		width: '300px',
+		height: '80px',
+		fontSize: '30px',
+		backgroundColor: '#fff',
+		color: 'green',
+		fontWeight: 'bold'
+	}
+})
+
 export default function KitchenPage() {	
 	const [orders, setOrders] = useState([])
 
@@ -47,30 +74,3 @@ export default function KitchenPage() {
 		</div>
 	)
 }
-
-const style = StyleSheet.create({
-	listaDePedidos: {
-		display: 'flex',
-		flexWrap: 'wrap',
-		justifyContent: 'space-evenly'
-	},
-	size: {
-		textAlign: 'center'
-	},
-	btnPedido: {
-		width: '300px',
-		height: '80px',
-		fontSize: '30px',
-		backgroundColor: '#fff',
-		color: 'red',
-		fontWeight: 'bold'
-	},
-	pronto: {
-		width: '300px',
-		height: '80px',
-		fontSize: '30px',
-		backgroundColor: '#fff',
-		color: 'green',
-		fontWeight: 'bold'
-	}
-})

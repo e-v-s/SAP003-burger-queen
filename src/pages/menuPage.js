@@ -11,6 +11,68 @@ import MenuItem from '../components/MenuItem.js'
 import ItemAdded from '../components/ItemAdded.js'
 import Modal from '../components/ModalBurger.js'
 
+const style = StyleSheet.create({
+	inputSection: {
+		display: 'flex',
+		marginTop: '30px',
+		flexDirection: 'column',
+		width: '400px',
+		paddingTop: '50px',
+		order: '2',
+		marginRight: '60px',
+		alignContent: 'flex-start'
+	},
+	buttonMenu: {
+		display:  'flex',
+		marginTop: '90px',
+		flexDirection: 'column',
+		marginLeft:'60px',
+		order: '1',
+	},
+	exemplo: {
+		display: 'flex',
+		justifyContent: 'space-around',
+		'@media (max-width: 900px)': {
+			width: '900px',
+		}
+	},
+	total: {
+		fontSize: '20px'
+	},
+	overlay: {
+		zIndex: '98',
+	  position: 'fixed',
+	  top: '0',
+	  right: '0',
+	  bottom: '0',
+	  left: '0',
+	  display: 'flex',
+	  alignItems: 'center',
+	  justifyContent: 'center',
+	  height: '100%',
+	  width: '100%',
+	  backgroundColor: 'rgba(0, 0, 0, 0.3)',
+	},
+	modal: {
+		zIndex: '99',
+	}, 
+	orders: {
+		cursor: 'pointer',
+		margin: '10px',
+		border: '1px solid black',
+		padding: '20px',
+		background:'#ff4d4d',
+		fontSize: '20px',
+		width: '120px',
+		flexWrap: 'wrap'
+	},
+	orderSection: {
+		display:'flex',
+		justifyContent: 'center',
+		marginTop: '20px',
+	}
+})
+
 export default function MenuPage(props) {
 	const [menu, setMenu] = useState([])
 	const [menuType, setMenuType] = useState('cafe')
@@ -130,65 +192,3 @@ export default function MenuPage(props) {
 		</div>
 	)
 }
-
-const style = StyleSheet.create({
-	inputSection: {
-		display: 'flex',
-		marginTop: '30px',
-		flexDirection: 'column',
-		width: '400px',
-		paddingTop: '50px',
-		order: '2',
-		marginRight: '60px',
-		alignContent: 'flex-start'
-	},
-	buttonMenu: {
-		display:  'flex',
-		marginTop: '90px',
-		flexDirection: 'column',
-		marginLeft:'60px',
-		order: '1',
-	},
-	exemplo: {
-		display: 'flex',
-		justifyContent: 'space-around',
-		'@media (max-width: 900px)': {
-			width: '900px',
-		}
-	},
-	total: {
-		fontSize: '20px'
-	},
-	overlay: {
-		zIndex: '98',
-	  position: 'fixed',
-	  top: '0',
-	  right: '0',
-	  bottom: '0',
-	  left: '0',
-	  display: 'flex',
-	  alignItems: 'center',
-	  justifyContent: 'center',
-	  height: '100%',
-	  width: '100%',
-	  backgroundColor: 'rgba(0, 0, 0, 0.3)',
-	},
-	modal: {
-		zIndex: '99',
-	}, 
-	orders: {
-		cursor: 'pointer',
-		margin: '10px',
-		border: '1px solid black',
-		padding: '20px',
-		background:'#ff4d4d',
-		fontSize: '20px',
-		width: '120px',
-		flexWrap: 'wrap'
-	},
-	orderSection: {
-		display:'flex',
-		justifyContent: 'center',
-		marginTop: '20px',
-	}
-})

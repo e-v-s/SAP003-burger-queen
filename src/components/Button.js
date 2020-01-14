@@ -1,12 +1,6 @@
 import React from 'react'
 import { StyleSheet, css } from 'aphrodite'
 
-export default function	Button({...props}) {
-	return (
-		<button {...props} className={css(style.button)}></button>
-	)
-}
-
 const style = StyleSheet.create({
 	button: {
 		color: '#000',
@@ -35,3 +29,9 @@ const style = StyleSheet.create({
 		}
 	},
 })
+
+export default function	Button({...props}) {
+	return (
+		<button {...props} className={css(style.button)}></button>
+	)
+}
