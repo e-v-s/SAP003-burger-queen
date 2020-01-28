@@ -1,9 +1,9 @@
-import React from 'react'
-import { StyleSheet, css } from 'aphrodite'
+import React from 'react';
+import { StyleSheet, css } from 'aphrodite';
 
 const style = StyleSheet.create({
 	headerImg: {
-		height: '200px',
+		height: '100px',
 		marginTop: '60px',
 		display: 'flex',
 		justifyContent: 'center'

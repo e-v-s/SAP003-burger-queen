@@ -1,9 +1,9 @@
-import React from 'react'
-import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import React from 'react';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
-import MainPage from './pages/mainPage.js'
-import MenuPage from './pages/menuPage.js'
-import KitchenPage from './pages/kitchenPage.js'
+import MainPage from './pages/mainPage.js';
+import MenuPage from './pages/menuPage.js';
+import KitchenPage from './pages/kitchenPage.js';
 
 const Routes = () => {
 	return (
@@ -15,6 +15,6 @@ const Routes = () => {
 			</Switch>
 		</BrowserRouter>
 	)
-}
+};
 
-export default Routes
+export default Routes;

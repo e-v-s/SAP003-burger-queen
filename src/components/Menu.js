@@ -3,11 +3,12 @@ import { StyleSheet, css } from 'aphrodite'
 
 const style = StyleSheet.create({
 	menu: {
-		display: 'flex',
-		flexDirection: 'column',
-		width: '300px',
+		display: 'inline-flex',
+		flexDirection: 'row',
+		width: '100px',
 		fontSize: '20px',
-		fontWeight: 'bold'
+		fontWeight: 'bold',
+		flexWrap: 'wrap'
 	}
 })
 

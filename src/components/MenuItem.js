@@ -7,7 +7,8 @@ const style = StyleSheet.create({
 		margin: '10px',
 		border: '1px solid black',
 		padding: '20px',
-		fontSize: '20px'
+		fontSize: '20px',
+		display: 'inline-flex',
 	}
 })
 

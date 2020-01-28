@@ -1,5 +1,5 @@
-import React from 'react'
-import { StyleSheet, css } from 'aphrodite'
+import React from 'react';
+import { StyleSheet, css } from 'aphrodite';
 
 const style = StyleSheet.create({
 	button: {
@@ -27,11 +27,11 @@ const style = StyleSheet.create({
 		'@media (max-width: 900px)': {
 			width: '300px'
 		}
-	},
-})
+	}
+});
 
 export default function	Button({...props}) {
 	return (
 		<button {...props} className={css(style.button)}></button>
 	)
-}
+};
