@@ -4,7 +4,7 @@ import { StyleSheet, css } from 'aphrodite';
 
 const styles = StyleSheet.create({
   link: {
-    color: '#000',
+    color: '#0166B3',
     textDecoration: 'none',
     textTransform: 'uppercase',
     width: '300px',
@@ -14,7 +14,8 @@ const styles = StyleSheet.create({
     borderRadius: '4px',
     fontSize: '40px',
     marginTop: '20px',
-    cursor: 'pointer'
+    cursor: 'pointer',
+    fontFamily: "'Fjalla One', sans-serif"
   },
   flex: {
     display: 'flex',
@@ -22,6 +23,9 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#ED3936',
+    width: '500px',
+    margin: '0 auto',
   }
 });
 

@@ -19,23 +19,19 @@ const style = StyleSheet.create({
     width: '400px',
     paddingTop: '50px',
     order: '2',
-    marginRight: '60px',
     alignContent: 'flex-start'
   },
   buttonMenu: {
     display:  'inline-flex',
-    marginTop: '90px',
+    marginTop: '40px',
     flexDirection: 'column',
-    marginLeft:'60px',
+    marginLeft:'40px',
     order: '1',
-    width: '500px'
+    width: '400px',
   },
   exemplo: {
     display: 'flex',
-    justifyContent: 'space-around',
-    '@media (max-width: 900px)': {
-      width: '900px',
-    }
+    justifyContent: 'center',
   },
   total: {
     fontSize: '20px'
@@ -68,10 +64,27 @@ const style = StyleSheet.create({
     flexWrap: 'wrap'
   },
   orderSection: {
-    display:'flex',
+    display:'inline-flex',
     justifyContent: 'center',
-    marginTop: '20px',
+    marginTop: '10px',
     flexWrap: 'wrap',
+    width: '100%'
+  },
+  menu: {
+    display: 'inline-flex',
+    flexDirection: 'flex-start',
+    width: '400px',
+    fontSize: '20px',
+    fontWeight: 'bold',
+    flexWrap: 'wrap',
+  },
+  menuItem: {
+    cursor: 'pointer',
+    margin: '10px',
+    border: '1px solid black',
+    padding: '10px',
+    fontSize: '20px',
+    width: '130px',
   }
 });
 
@@ -184,21 +197,19 @@ export default function MenuPage(props) {
               order.map((item, index) => <ItemAdded key={index} item={item} remove={()=> remove(item)} onClick={() => trash(item)} add={()=> add(item)} name='order' />)
             }
           </ul>
-          <p className={css(style.total)}>Total: {totalValue}</p>
+          <p className={css(style.total)}>Total: R$ {totalValue}</p>
           <Button children='Enviar pedido' id='enviar-pedido' value='Submit' type='submit' />
         </form>     
         <section className={css(style.buttonMenu)}>
           <Button children='Café da Manhã' id='cafe' onClick={showMenu} />
           <Button children='Lanches' id='lanche' onClick={showMenu} />
-          <section className={css(style.menu)}>
-          {
-            ['cafe', 'lanche'].filter(m => m === menuType).map(categoria => 
-              <Menu key={Math.random()} children={
-                menu.filter(i => i.categoria === categoria).map(i => i.nome === 'Burger simples' || i.nome === 'Burger duplo' ? <MenuItem onClick={() => {addToList(i); setModal(true)}} item={i} key={i.nome} /> : <MenuItem onClick={() => addToList(i)} item={i} key={i.nome} />
-                  )
-            }/>)
-          }
-          </section>
+            {
+              ['cafe', 'lanche'].filter(m => m === menuType).map(categoria => 
+                <Menu className={css(style.menu)} key={Math.random()} children={
+                  menu.filter(i => i.categoria === categoria).map(i => i.nome === 'Burger simples' || i.nome === 'Burger duplo' ? <MenuItem className={css(style.menuItem)} onClick={() => {addToList(i); setModal(true)}} item={i} key={i.nome} /> : <MenuItem className={css(style.menuItem)} onClick={() => addToList(i)} item={i} key={i.nome} />
+                    )
+              }/>)
+            }
         </section>
       </section>
     </div>

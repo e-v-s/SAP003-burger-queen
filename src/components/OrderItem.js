@@ -4,12 +4,12 @@ import { StyleSheet, css } from 'aphrodite'
 const style = StyleSheet.create({
 	pedido: {
 		listStyle: 'none',
-		display: 'flex',
+		display: 'inline-flex',
 		flexDirection: 'column',
 		border: '1px solid #000',
-		width: '300px',
+		width: '200px',
 		padding: '10px',
-		marginTop: '5px',
+		margin: '10px',
 	},
 	size: {
 		fontSize: '20px',

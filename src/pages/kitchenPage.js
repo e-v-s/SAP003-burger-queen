@@ -8,9 +8,10 @@ import Button from '../components/Button.js';
 
 const style = StyleSheet.create({
   listaDePedidos: {
-    display: 'flex',
+    display: 'inline-flex',
     flexWrap: 'wrap',
-    justifyContent: 'space-evenly'
+    justifyContent: 'center',
+    width: '650px',
   },
   buttons: {
     display: 'flex',
@@ -20,15 +21,15 @@ const style = StyleSheet.create({
     textAlign: 'center'
   },
   btnPedido: {
-    width: '300px',
+    width: '200px',
     height: '80px',
     fontSize: '30px',
     backgroundColor: '#fff',
     color: 'red',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   pronto: {
-    width: '300px',
+    width: '200px',
     height: '80px',
     fontSize: '30px',
     backgroundColor: '#fff',
@@ -71,8 +72,7 @@ export default function KitchenPage() {
   const [orderType, setOrderType] = useState('pendente');
 
   return (
-    <div>
-      <h1 className={css(style.size)}>Pedidos</h1>
+    <>
       <section className={css(style.buttons)}>
         <Button onClick={() => setOrderType('pendente')} children={'Pedidos pendentes'} />
         <Button onClick={() => setOrderType('pronto')} children={'Pedidos prontos'} />
@@ -82,6 +82,6 @@ export default function KitchenPage() {
          orderType === 'pendente' ? orders.map((item, index) => item.status === 'Pendente' ? <OrderItem className={css(style.btnPedido)} item={item} key={index} pedido={item} onClick={() => {orderOk(item); timeD(item)}} /> : null) : orders.map((item, index) => item.status === 'Pronto' ? <OrderItem className={css(style.pronto)} item={item} key={index} pedido={item} onClick={() => {orderOk(item); timeD(item)}} /> : null)
         }
       </ul>
-    </div>
+    </>
   )
 };

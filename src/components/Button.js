@@ -12,6 +12,7 @@ const style = StyleSheet.create({
 		width: '300px',
 		fontWeight: 'bold',
 		fontSize: '20px',
+		fontFamily: "'Signika', sans-serif",
 		':active': {
 			backgroundColor: '#fcca6c',
 			color: '#3a3a3a'

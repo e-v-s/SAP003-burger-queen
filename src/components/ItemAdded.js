@@ -22,7 +22,6 @@ export default function ItemAdded(props) {
 			</li> : <li className={css(style.listItem)}>
 				<p>{props.item.nome}</p>
 				<p className={css(style.sizeMin)}>{props.item.tipo}</p>
-				<p className={css(style.sizeMin)}>{props.item.extra}</p>
 				<button type="button" onClick={props.remove}>-</button>  {props.item.quantidade}  <button type="button" onClick={props.add}>+</button> <button type="button" id={props.id} onClick={props.onClick}>X</button>
 			</li>			
 	)
